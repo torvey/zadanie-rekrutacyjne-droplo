@@ -32,6 +32,7 @@ export default {
                     primary: "#101828",
                     secondary: "#344054",
                     tertiary: "#475467",
+                    placeholder: "#667085",
                 },
             },
             maxWidth: {
@@ -41,5 +42,3 @@ export default {
     },
     plugins: [],
 } satisfies Config;
-
-// #7F56D9
