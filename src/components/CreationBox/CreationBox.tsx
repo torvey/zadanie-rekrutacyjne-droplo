@@ -6,9 +6,9 @@ import { useForm } from "react-hook-form";
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
 import { Label } from "../Label/Label";
-import { FormDataType, ItemCreationBoxProps } from "./ItemCreationBox.types";
+import { CreationBoxProps, FormDataType } from "./CreationBox.types";
 
-export const ItemCreationBox: FC<ItemCreationBoxProps> = ({
+export const CreationBox: FC<CreationBoxProps> = ({
     onDelete,
     onCancel,
     onAdd,
