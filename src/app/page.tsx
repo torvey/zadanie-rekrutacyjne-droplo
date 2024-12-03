@@ -1,5 +1,6 @@
 "use client";
 
+import { CreatedBox } from "@/components/CreatedBox/CreatedBox";
 import { CreationBox } from "@/components/CreationBox/CreationBox";
 import { EmptyMenuBox } from "@/components/EmptyMenuBox/EmptyMenuBox";
 import { useCallback } from "react";
@@ -28,6 +29,15 @@ export default function Home() {
                 onAdd={handleAddItemClick}
                 onCancel={handleCancelItemClick}
                 onDelete={handleDeleteItemClick}
+            />
+            <CreatedBox
+                positions={[
+                    { name: "Promocje", link: "https://example.com/promocje" },
+                    { name: "Kontakt", link: "https://example.com/kontakt" },
+                ]}
+                onAddNewPosition={() => null}
+                onDelete={() => null}
+                onEdit={() => null}
             />
         </div>
     );
