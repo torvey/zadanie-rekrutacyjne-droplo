@@ -9,6 +9,7 @@ import { Label } from "../Label/Label";
 import { CreationBoxProps, FormDataType } from "./CreationBox.types";
 
 export const CreationBox: FC<CreationBoxProps> = ({
+    position,
     onDelete,
     onCancel,
     onAdd,
@@ -18,6 +19,14 @@ export const CreationBox: FC<CreationBoxProps> = ({
         handleSubmit,
         formState: { errors },
     } = useForm<FormDataType>();
+
+    const handleCancel = useCallback(() => {
+        onCancel(position);
+    }, [onCancel, position]);
+
+    const handleDelete = useCallback(() => {
+        onDelete(position);
+    }, [onDelete, position]);
 
     const onSubmit = useCallback(
         (data: FormDataType) => {
@@ -60,7 +69,7 @@ export const CreationBox: FC<CreationBoxProps> = ({
                 <div className="mt-5 flex gap-x-2">
                     <Button
                         variant="secondary"
-                        onClick={onCancel}
+                        onClick={handleCancel}
                         type="button"
                     >
                         Anuluj
@@ -73,7 +82,7 @@ export const CreationBox: FC<CreationBoxProps> = ({
             <div>
                 <button
                     className="w-10 h-10 ml-4 flex justify-center items-center transition-opacity hover:opacity-80"
-                    onClick={onDelete}
+                    onClick={handleDelete}
                     type="button"
                 >
                     <Image src={deleteIcon} alt={"delete"} />

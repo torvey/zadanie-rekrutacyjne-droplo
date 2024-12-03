@@ -1,44 +1,61 @@
 "use client";
 
-import { CreatedBox } from "@/components/CreatedBox/CreatedBox";
 import { CreationBox } from "@/components/CreationBox/CreationBox";
 import { EmptyMenuBox } from "@/components/EmptyMenuBox/EmptyMenuBox";
-import { useCallback } from "react";
+import { MenuType } from "@/types/types";
+import { useCallback, useState } from "react";
 
 export default function Home() {
+    const [menuItems, setMenuItems] = useState<Array<MenuType>>([]);
+
     const handleAddMenuClick = useCallback(() => {
-        // TODO: add logic
+        setMenuItems((prev) => [
+            {
+                position: prev.length,
+                children: [],
+            },
+            ...prev,
+        ]);
     }, []);
 
     const handleAddItemClick = useCallback(() => {
         // TODO: add logic
     }, []);
 
-    const handleCancelItemClick = useCallback(() => {
-        // TODO: add logic
-    }, []);
+    const handleCancelItemClick = useCallback((position: number) => {
+        setMenuItems((prev) => {
+            return prev
+                .filter((menu) => menu.position !== position)
+                .map((menu) => {
+                    // decrement position of all menus after the deleted one
 
-    const handleDeleteItemClick = useCallback(() => {
-        // TODO: add logic
+                    if (menu.position > position) {
+                        menu.position = menu.position - 1;
+                    }
+
+                    return menu;
+                });
+        });
     }, []);
 
     return (
-        <div className="px-6 pt-7 flex flex-col gap-8">
+        <div className="px-6 py-7 flex flex-col gap-8">
             <EmptyMenuBox onClick={handleAddMenuClick} />
-            <CreationBox
-                onAdd={handleAddItemClick}
-                onCancel={handleCancelItemClick}
-                onDelete={handleDeleteItemClick}
-            />
-            <CreatedBox
-                positions={[
-                    { name: "Promocje", link: "https://example.com/promocje" },
-                    { name: "Kontakt", link: "https://example.com/kontakt" },
-                ]}
-                onAddNewPosition={() => null}
-                onDelete={() => null}
-                onEdit={() => null}
-            />
+            {menuItems.map((menu) => {
+                if (menu.children.length === 0) {
+                    return (
+                        <CreationBox
+                            key={`creation_${menu.position}`}
+                            position={menu.position}
+                            onAdd={handleAddItemClick}
+                            onCancel={handleCancelItemClick}
+                            onDelete={handleCancelItemClick}
+                        />
+                    );
+                }
+
+                return <div key={`item_${menu.position}`}></div>;
+            })}
         </div>
     );
 }

@@ -1,6 +1,7 @@
 export type CreationBoxProps = {
-    onDelete: () => void;
-    onCancel: () => void;
+    position: number;
+    onDelete: (position: number) => void;
+    onCancel: (position: number) => void;
     onAdd: (label: string, link: string) => void;
 };
 
