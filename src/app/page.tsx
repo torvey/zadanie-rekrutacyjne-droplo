@@ -1,7 +1,8 @@
 "use client";
 
+import { CreatedBox } from "@/components/CreatedBox/CreatedBox";
+import { CreationBox } from "@/components/CreationBox/CreationBox";
 import { EmptyMenuBox } from "@/components/EmptyMenuBox/EmptyMenuBox";
-import { ItemCreationBox } from "@/components/ItemCreationBox/ItemCreationBox";
 import { useCallback } from "react";
 
 export default function Home() {
@@ -24,10 +25,19 @@ export default function Home() {
     return (
         <div className="px-6 pt-7 flex flex-col gap-8">
             <EmptyMenuBox onClick={handleAddMenuClick} />
-            <ItemCreationBox
+            <CreationBox
                 onAdd={handleAddItemClick}
                 onCancel={handleCancelItemClick}
                 onDelete={handleDeleteItemClick}
+            />
+            <CreatedBox
+                positions={[
+                    { name: "Promocje", link: "https://example.com/promocje" },
+                    { name: "Kontakt", link: "https://example.com/kontakt" },
+                ]}
+                onAddNewPosition={() => null}
+                onDelete={() => null}
+                onEdit={() => null}
             />
         </div>
     );
