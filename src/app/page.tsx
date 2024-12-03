@@ -11,6 +11,7 @@ export default function Home() {
     const handleAddMenuClick = useCallback(() => {
         setMenuItems((prev) => [
             {
+                key: Date.now(),
                 position: prev.length,
                 children: [],
             },
@@ -27,10 +28,11 @@ export default function Home() {
             return prev
                 .filter((menu) => menu.position !== position)
                 .map((menu) => {
-                    // decrement position of all menus after the deleted one
-
                     if (menu.position > position) {
-                        menu.position = menu.position - 1;
+                        return {
+                            ...menu,
+                            position: menu.position - 1,
+                        };
                     }
 
                     return menu;
@@ -45,7 +47,7 @@ export default function Home() {
                 if (menu.children.length === 0) {
                     return (
                         <CreationBox
-                            key={`creation_${menu.position}`}
+                            key={`creation_${menu.key}`}
                             position={menu.position}
                             onAdd={handleAddItemClick}
                             onCancel={handleCancelItemClick}

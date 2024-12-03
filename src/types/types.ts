@@ -6,6 +6,7 @@ export type MenuItemType = {
 };
 
 export type MenuType = {
+    key: number;
     position: number;
     children: MenuItemType[];
 };
