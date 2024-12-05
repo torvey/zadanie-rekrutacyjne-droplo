@@ -1,7 +1,9 @@
 export type CreatedPositionProps = {
     name: string;
     link: string;
-    onDelete: () => void;
-    onEdit: () => void;
+    position: number[];
+    boxPosition: number;
+    onEdit: (position: number[], name: string, link: string) => void;
+    onDelete: (position: number[]) => void;
     onAddNewPosition: () => void;
 };

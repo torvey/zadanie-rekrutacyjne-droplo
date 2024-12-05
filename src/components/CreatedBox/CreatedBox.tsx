@@ -5,17 +5,20 @@ import { CreatedBoxProps } from "./CreatedBox.types";
 
 export const CreatedBox: FC<CreatedBoxProps> = ({
     positions,
+    boxPosition,
     onAddNewPosition,
     onDelete,
     onEdit,
 }) => {
     return (
         <div className="border border-border-primary rounded-lg overflow-hidden">
-            {positions.map((position) => (
+            {positions.map(({ link, name }, idx) => (
                 <CreatedPosition
-                    key={position.link}
-                    name={position.name}
-                    link={position.link}
+                    key={link}
+                    name={name}
+                    link={link}
+                    position={[idx]}
+                    boxPosition={boxPosition}
                     onAddNewPosition={onAddNewPosition}
                     onDelete={onDelete}
                     onEdit={onEdit}

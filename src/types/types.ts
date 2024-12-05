@@ -1,5 +1,5 @@
 export type MenuItemType = {
-    position: number;
+    key: number;
     name: string;
     link: string;
     children: MenuItemType[];
@@ -7,6 +7,5 @@ export type MenuItemType = {
 
 export type MenuType = {
     key: number;
-    position: number;
     children: MenuItemType[];
 };

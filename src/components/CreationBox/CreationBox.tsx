@@ -10,6 +10,8 @@ import { CreationBoxProps, FormDataType } from "./CreationBox.types";
 
 export const CreationBox: FC<CreationBoxProps> = ({
     position,
+    defaultName,
+    defaultLink,
     onDelete,
     onCancel,
     onAdd,
@@ -18,7 +20,12 @@ export const CreationBox: FC<CreationBoxProps> = ({
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<FormDataType>();
+    } = useForm<FormDataType>({
+        defaultValues: {
+            name: defaultName,
+            link: defaultLink,
+        },
+    });
 
     const handleCancel = useCallback(() => {
         onCancel(position);
@@ -30,14 +37,14 @@ export const CreationBox: FC<CreationBoxProps> = ({
 
     const onSubmit = useCallback(
         (data: FormDataType) => {
-            onAdd(data.name, data.link);
+            onAdd(position, data.name, data.link);
         },
-        [onAdd]
+        [position, onAdd]
     );
 
     return (
         <form
-            className="bg-bg-primary border border-border-primary py-5 px-6 rounded-lg flex"
+            className="bg-bg-primary border border-border-primary py-5 px-6 rounded-lg flex w-full"
             onSubmit={handleSubmit(onSubmit)}
         >
             <div className="w-full flex flex-col gap-2">
