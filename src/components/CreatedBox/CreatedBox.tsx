@@ -33,6 +33,7 @@ export const CreatedBox: FC<CreatedBoxProps> = ({
             {positions.map(({ key, link, name, children }, idx) => (
                 <CreatedPosition
                     key={key}
+                    id={key}
                     name={name}
                     items={children}
                     link={link}

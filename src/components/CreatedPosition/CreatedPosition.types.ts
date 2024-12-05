@@ -1,6 +1,7 @@
 import { MenuItemType } from "@/types/types";
 
 export type CreatedPositionProps = {
+    id: number;
     name: string;
     link: string;
     items: MenuItemType[];

@@ -1,4 +1,6 @@
 import moveIcon from "@/icons/move.svg";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import Image from "next/image";
 import { FC, useCallback, useState } from "react";
 import { ButtonGroup } from "../ButtonGroup/ButtonGroup";
@@ -6,6 +8,7 @@ import { CreationBox } from "../CreationBox/CreationBox";
 import { CreatedPositionProps } from "./CreatedPosition.types";
 
 export const CreatedPosition: FC<CreatedPositionProps> = ({
+    id,
     name,
     link,
     position,
@@ -17,6 +20,21 @@ export const CreatedPosition: FC<CreatedPositionProps> = ({
 }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [showForm, setShowForm] = useState(false);
+
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({ id: id.toString() });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+    };
 
     const showEdit = useCallback(() => {
         setIsEditing(true);
@@ -55,7 +73,7 @@ export const CreatedPosition: FC<CreatedPositionProps> = ({
     );
 
     return (
-        <>
+        <div ref={setNodeRef} {...attributes} style={style}>
             <div
                 className={`bg-bg-primary py-4 px-6 flex justify-between items-center border-b border-border-secondary ${className}`}
             >
@@ -71,7 +89,10 @@ export const CreatedPosition: FC<CreatedPositionProps> = ({
                 ) : (
                     <>
                         <div className="flex items-center">
-                            <div className="w-10 h-10 flex items-center cursor-pointer">
+                            <div
+                                className="w-10 h-10 flex items-center cursor-move"
+                                {...listeners}
+                            >
                                 <Image src={moveIcon} alt="move" />
                             </div>
                             <div className="flex flex-col gap-y-1.5">
@@ -105,6 +126,7 @@ export const CreatedPosition: FC<CreatedPositionProps> = ({
             {items.map(({ key, name, link, children }, idx) => (
                 <div key={key} className="pl-16">
                     <CreatedPosition
+                        id={key}
                         name={name}
                         link={link}
                         items={children}
@@ -126,6 +148,6 @@ export const CreatedPosition: FC<CreatedPositionProps> = ({
                     />
                 </div>
             )}
-        </>
+        </div>
     );
 };
