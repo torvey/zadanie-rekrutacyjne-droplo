@@ -9,6 +9,9 @@ import { Label } from "../Label/Label";
 import { CreationBoxProps, FormDataType } from "./CreationBox.types";
 
 export const CreationBox: FC<CreationBoxProps> = ({
+    position,
+    defaultName,
+    defaultLink,
     onDelete,
     onCancel,
     onAdd,
@@ -17,18 +20,31 @@ export const CreationBox: FC<CreationBoxProps> = ({
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<FormDataType>();
+    } = useForm<FormDataType>({
+        defaultValues: {
+            name: defaultName,
+            link: defaultLink,
+        },
+    });
+
+    const handleCancel = useCallback(() => {
+        onCancel(position);
+    }, [onCancel, position]);
+
+    const handleDelete = useCallback(() => {
+        onDelete(position);
+    }, [onDelete, position]);
 
     const onSubmit = useCallback(
         (data: FormDataType) => {
-            onAdd(data.name, data.link);
+            onAdd(position, data.name, data.link);
         },
-        [onAdd]
+        [position, onAdd]
     );
 
     return (
         <form
-            className="bg-bg-primary border border-border-primary py-5 px-6 rounded-lg flex"
+            className="bg-bg-primary border border-border-primary py-5 px-6 rounded-lg flex w-full"
             onSubmit={handleSubmit(onSubmit)}
         >
             <div className="w-full flex flex-col gap-2">
@@ -60,7 +76,7 @@ export const CreationBox: FC<CreationBoxProps> = ({
                 <div className="mt-5 flex gap-x-2">
                     <Button
                         variant="secondary"
-                        onClick={onCancel}
+                        onClick={handleCancel}
                         type="button"
                     >
                         Anuluj
@@ -73,7 +89,7 @@ export const CreationBox: FC<CreationBoxProps> = ({
             <div>
                 <button
                     className="w-10 h-10 ml-4 flex justify-center items-center transition-opacity hover:opacity-80"
-                    onClick={onDelete}
+                    onClick={handleDelete}
                     type="button"
                 >
                     <Image src={deleteIcon} alt={"delete"} />

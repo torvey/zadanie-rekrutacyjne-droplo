@@ -3,42 +3,77 @@
 import { CreatedBox } from "@/components/CreatedBox/CreatedBox";
 import { CreationBox } from "@/components/CreationBox/CreationBox";
 import { EmptyMenuBox } from "@/components/EmptyMenuBox/EmptyMenuBox";
-import { useCallback } from "react";
+import { MenuItemType } from "@/types/types";
+import { addItemToMenu } from "@/utils/add";
+import { editMenuItems } from "@/utils/edit";
+import { useCallback, useState } from "react";
 
 export default function Home() {
-    const handleAddMenuClick = useCallback(() => {
-        // TODO: add logic
+    const [menuItems, setMenuItems] = useState<Array<MenuItemType>>([]);
+    const [showForm, setShowForm] = useState(false);
+
+    const displayForm = useCallback(() => {
+        setShowForm(true);
     }, []);
 
-    const handleAddItemClick = useCallback(() => {
-        // TODO: add logic
+    const hideForm = useCallback(() => {
+        setShowForm(false);
     }, []);
 
-    const handleCancelItemClick = useCallback(() => {
-        // TODO: add logic
-    }, []);
+    const handleAdd = useCallback(
+        (position: number[], label: string, link: string) => {
+            setMenuItems((prev) =>
+                addItemToMenu(prev, position, {
+                    key: Date.now(),
+                    name: label,
+                    link,
+                    children: [],
+                })
+            );
+            setShowForm(false);
+        },
+        []
+    );
 
-    const handleDeleteItemClick = useCallback(() => {
-        // TODO: add logic
+    const handleEdit = useCallback(
+        (position: number[], label: string, link: string) => {
+            setMenuItems((prev) =>
+                editMenuItems(prev, position, (item) => {
+                    return {
+                        ...item,
+                        name: label,
+                        link,
+                    };
+                })
+            );
+        },
+        []
+    );
+
+    const handleDelete = useCallback((position: number[]) => {
+        setMenuItems((prev) => editMenuItems(prev, position, () => null));
     }, []);
 
     return (
-        <div className="px-6 pt-7 flex flex-col gap-8">
-            <EmptyMenuBox onClick={handleAddMenuClick} />
-            <CreationBox
-                onAdd={handleAddItemClick}
-                onCancel={handleCancelItemClick}
-                onDelete={handleDeleteItemClick}
-            />
-            <CreatedBox
-                positions={[
-                    { name: "Promocje", link: "https://example.com/promocje" },
-                    { name: "Kontakt", link: "https://example.com/kontakt" },
-                ]}
-                onAddNewPosition={() => null}
-                onDelete={() => null}
-                onEdit={() => null}
-            />
+        <div className="px-6 py-7 flex flex-col gap-8">
+            {menuItems.length === 0 && <EmptyMenuBox onClick={displayForm} />}
+            {showForm && (
+                <CreationBox
+                    onAdd={handleAdd}
+                    onCancel={hideForm}
+                    onDelete={hideForm}
+                    position={[]}
+                />
+            )}
+
+            {menuItems.length > 0 && (
+                <CreatedBox
+                    positions={menuItems}
+                    onAddNewPosition={handleAdd}
+                    onDelete={handleDelete}
+                    onEdit={handleEdit}
+                />
+            )}
         </div>
     );
 }

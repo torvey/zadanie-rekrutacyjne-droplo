@@ -1,9 +1,8 @@
+import { MenuItemType } from "@/types/types";
+
 export type CreatedBoxProps = {
-    positions: {
-        name: string;
-        link: string;
-    }[];
-    onDelete: () => void;
-    onEdit: () => void;
-    onAddNewPosition: () => void;
+    positions: MenuItemType[];
+    onDelete: (position: number[]) => void;
+    onEdit: (position: number[], name: string, link: string) => void;
+    onAddNewPosition: (position: number[], name: string, link: string) => void;
 };

@@ -1,7 +1,10 @@
 export type CreationBoxProps = {
-    onDelete: () => void;
-    onCancel: () => void;
-    onAdd: (label: string, link: string) => void;
+    position: number[];
+    defaultName?: string;
+    defaultLink?: string;
+    onDelete: (position: number[]) => void;
+    onCancel: (position: number[]) => void;
+    onAdd: (position: number[], label: string, link: string) => void;
 };
 
 export type FormDataType = {
