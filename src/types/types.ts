@@ -4,8 +4,3 @@ export type MenuItemType = {
     link: string;
     children: MenuItemType[];
 };
-
-export type MenuType = {
-    key: number;
-    children: MenuItemType[];
-};

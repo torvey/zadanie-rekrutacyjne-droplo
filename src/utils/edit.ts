@@ -1,15 +1,21 @@
-import { MenuItemType, MenuType } from "@/types/types";
+import { MenuItemType } from "@/types/types";
 
-const updateChildren = (
-    children: MenuItemType[],
-    positions: number[],
+export const editMenuItems = (
+    items: MenuItemType[],
+    position: number[],
     updateCallback: (item: MenuItemType) => MenuItemType | null
 ): MenuItemType[] => {
-    if (positions.length === 0) return children;
+    if (position.length === 0) return items;
 
-    const [currentPosition, ...remainingPositions] = positions;
+    const [currentPosition, ...remainingPositions] = position;
 
-    return children
+    // Sprawdzamy, czy indeks jest w zakresie
+    if (currentPosition < 0 || currentPosition >= items.length) {
+        console.warn("Invalid position:", position);
+        return items; // Zwracamy oryginalną tablicę, jeśli pozycja jest niepoprawna
+    }
+
+    return items
         .map((item, index) => {
             if (index !== currentPosition) return item;
 
@@ -19,7 +25,7 @@ const updateChildren = (
 
             return {
                 ...item,
-                children: updateChildren(
+                children: editMenuItems(
                     item.children,
                     remainingPositions,
                     updateCallback
@@ -27,35 +33,4 @@ const updateChildren = (
             };
         })
         .filter(Boolean) as MenuItemType[];
-};
-
-export const updateMenuItems = (
-    menuItems: MenuType[],
-    positions: number[],
-    updateCallback: (item: MenuItemType) => MenuItemType | null
-): MenuType[] => {
-    if (positions.length === 0) return menuItems;
-
-    const [currentPosition, ...remainingPositions] = positions;
-
-    return menuItems
-        .map((menu, index) => {
-            if (index !== currentPosition) return menu;
-
-            return {
-                ...menu,
-                children: updateChildren(
-                    menu.children,
-                    remainingPositions,
-                    updateCallback
-                ),
-            };
-        })
-        .filter((menu, index) => {
-            if (index === currentPosition) {
-                return menu.children.length > 0;
-            }
-
-            return true;
-        });
 };
