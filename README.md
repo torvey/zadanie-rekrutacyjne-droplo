@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Project Overview
+
+This project is a [Next.js](https://nextjs.org) application designed to manage a dynamic menu system. It allows users to add, edit, delete, and reorder menu items through an intuitive drag-and-drop interface. The project leverages modern web technologies and libraries to provide a seamless user experience.
+
+## Features
+
+-   **Dynamic Menu Management**: Add, edit, delete, and reorder menu items with ease.
+-   **Drag-and-Drop Interface**: Utilize the `@dnd-kit` library for intuitive drag-and-drop functionality.
+-   **Form Handling**: Use `react-hook-form` for efficient form management and validation.
+-   **TypeScript**: Ensure type safety and code quality with TypeScript.
+-   **Tailwind CSS**: Style the application using CSS framework Tailwind CSS.
+-   **Testing**: Write and run unit tests using `vitest` to ensure code reliability.
 
 ## Getting Started
 
-First, run the development server:
+### Installation
+
+First, install the necessary packages:
 
 ```bash
-npm run dev
-# or
+yarn install
+```
+
+### Running the Development Server
+
+To start the development server, run:
+
+```bash
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Building the project
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To build the project for production, run:
 
-## Learn More
+```bash
+yarn build
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Testing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To Test project, run:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+yarn test
+```
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-   **`src/components`**: Contains reusable UI components such as buttons, input fields, and menu-related components.
+-   **`src/utils`**: Utility functions for menu item manipulation and drag-and-drop operations.
+-   **`src/types`**: TypeScript type definitions for the project.
+-   **`src/app`**: Main application files including the entry point and global styles.
