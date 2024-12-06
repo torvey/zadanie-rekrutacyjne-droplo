@@ -1,13 +1,14 @@
+import { useShowAndHide } from "@/hooks/useShowAndHide";
 import moveIcon from "@/icons/move.svg";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Image from "next/image";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback } from "react";
 import { ButtonGroup } from "../ButtonGroup/ButtonGroup";
-import { CreationBox } from "../CreationBox/CreationBox";
-import { CreatedPositionProps } from "./CreatedPosition.types";
+import { CreateBox } from "../CreateBox/CreateBox";
+import { MenuItemProps } from "./MenuItem.types";
 
-export const CreatedPosition: FC<CreatedPositionProps> = ({
+export const MenuItem: FC<MenuItemProps> = ({
     id,
     name,
     link,
@@ -18,8 +19,17 @@ export const CreatedPosition: FC<CreatedPositionProps> = ({
     onEdit,
     onAddNewPosition,
 }) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [showForm, setShowForm] = useState(false);
+    const {
+        display: displayEdit,
+        hide: hideEdit,
+        show: showEdit,
+    } = useShowAndHide();
+
+    const {
+        display: displayCreate,
+        hide: hideCreate,
+        show: showCreate,
+    } = useShowAndHide();
 
     const {
         attributes,
@@ -36,40 +46,24 @@ export const CreatedPosition: FC<CreatedPositionProps> = ({
         opacity: isDragging ? 0.5 : 1,
     };
 
-    const showEdit = useCallback(() => {
-        setIsEditing(true);
-    }, []);
-
-    const handleCancel = useCallback(() => {
-        setIsEditing(false);
-    }, []);
-
     const handleEdit = useCallback(
         (position: number[], name: string, link: string) => {
             onEdit(position, name, link);
-            setIsEditing(false);
+            hideEdit();
         },
-        [onEdit]
+        [onEdit, hideEdit]
     );
 
     const handleDelete = useCallback(() => {
         onDelete(position);
     }, [onDelete, position]);
 
-    const displayForm = useCallback(() => {
-        setShowForm(true);
-    }, []);
-
-    const hideForm = useCallback(() => {
-        setShowForm(false);
-    }, []);
-
     const handleAdd = useCallback(
         (position: number[], name: string, link: string) => {
             onAddNewPosition(position, name, link);
-            setShowForm(false);
+            hideCreate();
         },
-        [onAddNewPosition]
+        [onAddNewPosition, hideCreate]
     );
 
     return (
@@ -77,11 +71,11 @@ export const CreatedPosition: FC<CreatedPositionProps> = ({
             <div
                 className={`bg-bg-primary py-4 px-6 flex justify-between items-center border-b border-border-secondary ${className}`}
             >
-                {isEditing ? (
-                    <CreationBox
+                {showEdit ? (
+                    <CreateBox
                         onAdd={handleEdit}
-                        onCancel={handleCancel}
-                        onDelete={handleCancel}
+                        onCancel={hideEdit}
+                        onDelete={hideEdit}
                         position={position}
                         defaultName={name}
                         defaultLink={link}
@@ -112,11 +106,11 @@ export const CreatedPosition: FC<CreatedPositionProps> = ({
                                 },
                                 {
                                     label: "Edytuj",
-                                    onClick: showEdit,
+                                    onClick: displayEdit,
                                 },
                                 {
                                     label: "Dodaj pozycję menu",
-                                    onClick: displayForm,
+                                    onClick: displayCreate,
                                 },
                             ]}
                         />
@@ -125,7 +119,7 @@ export const CreatedPosition: FC<CreatedPositionProps> = ({
             </div>
             {items.map(({ key, name, link, children }, idx) => (
                 <div key={key} className="pl-16">
-                    <CreatedPosition
+                    <MenuItem
                         id={key}
                         name={name}
                         link={link}
@@ -138,12 +132,12 @@ export const CreatedPosition: FC<CreatedPositionProps> = ({
                     />
                 </div>
             ))}
-            {showForm && (
+            {showCreate && (
                 <div className="pl-16 pr-6 py-5 bg-bg-secondary border-b border-border-secondary">
-                    <CreationBox
+                    <CreateBox
                         onAdd={handleAdd}
-                        onCancel={hideForm}
-                        onDelete={hideForm}
+                        onCancel={hideCreate}
+                        onDelete={hideCreate}
                         position={position}
                     />
                 </div>

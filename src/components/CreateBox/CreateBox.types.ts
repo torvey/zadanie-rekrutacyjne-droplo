@@ -1,4 +1,4 @@
-export type CreationBoxProps = {
+export type CreateBoxProps = {
     position: number[];
     defaultName?: string;
     defaultLink?: string;

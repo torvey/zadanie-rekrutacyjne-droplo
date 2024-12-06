@@ -1,37 +1,30 @@
-import { FC, useCallback, useState } from "react";
+import { useShowAndHide } from "@/hooks/useShowAndHide";
+import { FC, useCallback } from "react";
 import { Button } from "../Button/Button";
-import { CreatedPosition } from "../CreatedPosition/CreatedPosition";
-import { CreationBox } from "../CreationBox/CreationBox";
-import { CreatedBoxProps } from "./CreatedBox.types";
+import { CreateBox } from "../CreateBox/CreateBox";
+import { MenuItem } from "../MenuItem/MenuItem";
+import { MenuProps } from "./Menu.types";
 
-export const CreatedBox: FC<CreatedBoxProps> = ({
-    positions,
+export const Menu: FC<MenuProps> = ({
+    items,
     onAddNewPosition,
     onDelete,
     onEdit,
 }) => {
-    const [showForm, setShowForm] = useState(false);
-
-    const displayForm = useCallback(() => {
-        setShowForm(true);
-    }, []);
-
-    const hideForm = useCallback(() => {
-        setShowForm(false);
-    }, []);
+    const { display, hide, show } = useShowAndHide();
 
     const handleAdd = useCallback(
         (position: number[], name: string, link: string) => {
             onAddNewPosition(position, name, link);
-            setShowForm(false);
+            hide();
         },
-        [onAddNewPosition]
+        [onAddNewPosition, hide]
     );
 
     return (
         <div className="border border-border-primary rounded-lg overflow-hidden">
-            {positions.map(({ key, link, name, children }, idx) => (
-                <CreatedPosition
+            {items.map(({ key, link, name, children }, idx) => (
+                <MenuItem
                     key={key}
                     id={key}
                     name={name}
@@ -43,18 +36,18 @@ export const CreatedBox: FC<CreatedBoxProps> = ({
                     onEdit={onEdit}
                 />
             ))}
-            {showForm && (
+            {show && (
                 <div className="py-4 px-6 bg-bg-secondary border-b border-border-secondary">
-                    <CreationBox
+                    <CreateBox
                         onAdd={handleAdd}
-                        onCancel={hideForm}
-                        onDelete={hideForm}
+                        onCancel={hide}
+                        onDelete={hide}
                         position={[]}
                     />
                 </div>
             )}
             <div className="py-5 px-6">
-                <Button variant="secondary" onClick={displayForm}>
+                <Button variant="secondary" onClick={display} disabled={show}>
                     Dodaj pozycję menu
                 </Button>
             </div>

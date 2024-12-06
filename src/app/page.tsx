@@ -1,8 +1,9 @@
 "use client";
 
-import { CreatedBox } from "@/components/CreatedBox/CreatedBox";
-import { CreationBox } from "@/components/CreationBox/CreationBox";
+import { CreateBox } from "@/components/CreateBox/CreateBox";
 import { EmptyMenuBox } from "@/components/EmptyMenuBox/EmptyMenuBox";
+import { Menu } from "@/components/Menu/Menu";
+import { useShowAndHide } from "@/hooks/useShowAndHide";
 import { MenuItemType } from "@/types/types";
 import { addItemToMenu } from "@/utils/add";
 import { getAllIds, reorderArray } from "@/utils/dnd";
@@ -13,15 +14,8 @@ import { useCallback, useState } from "react";
 
 export default function Home() {
     const [menuItems, setMenuItems] = useState<Array<MenuItemType>>([]);
-    const [showForm, setShowForm] = useState(false);
 
-    const displayForm = useCallback(() => {
-        setShowForm(true);
-    }, []);
-
-    const hideForm = useCallback(() => {
-        setShowForm(false);
-    }, []);
+    const { display, hide, show } = useShowAndHide();
 
     const handleAdd = useCallback(
         (position: number[], label: string, link: string) => {
@@ -33,9 +27,9 @@ export default function Home() {
                     children: [],
                 })
             );
-            setShowForm(false);
+            hide();
         },
-        []
+        [hide]
     );
 
     const handleEdit = useCallback(
@@ -67,12 +61,12 @@ export default function Home() {
 
     return (
         <div className="px-6 py-7 flex flex-col gap-8">
-            {menuItems.length === 0 && <EmptyMenuBox onClick={displayForm} />}
-            {showForm && (
-                <CreationBox
+            {menuItems.length === 0 && <EmptyMenuBox onClick={display} />}
+            {show && (
+                <CreateBox
                     onAdd={handleAdd}
-                    onCancel={hideForm}
-                    onDelete={hideForm}
+                    onCancel={hide}
+                    onDelete={hide}
                     position={[]}
                 />
             )}
@@ -83,8 +77,8 @@ export default function Home() {
             >
                 <SortableContext items={getAllIds(menuItems)}>
                     {menuItems.length > 0 && (
-                        <CreatedBox
-                            positions={menuItems}
+                        <Menu
+                            items={menuItems}
                             onAddNewPosition={handleAdd}
                             onDelete={handleDelete}
                             onEdit={handleEdit}
