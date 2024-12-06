@@ -1,6 +1,6 @@
 import { MenuItemType } from "@/types/types";
 
-export type CreatedPositionProps = {
+export type MenuItemProps = {
     id: number;
     name: string;
     link: string;

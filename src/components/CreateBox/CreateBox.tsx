@@ -6,9 +6,9 @@ import { useForm } from "react-hook-form";
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
 import { Label } from "../Label/Label";
-import { CreationBoxProps, FormDataType } from "./CreationBox.types";
+import { CreateBoxProps, FormDataType } from "./CreateBox.types";
 
-export const CreationBox: FC<CreationBoxProps> = ({
+export const CreateBox: FC<CreateBoxProps> = ({
     position,
     defaultName,
     defaultLink,
